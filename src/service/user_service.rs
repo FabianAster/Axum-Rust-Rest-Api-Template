@@ -49,24 +49,25 @@ impl UserService {
     }
 
     async fn add_user(&self, payload: UserRegisterDto) -> Result<User, SqlxError> {
-        let insert = sqlx::query_as!(
-            User,
+        let insert = sqlx::query!(
             r#"
-        INSERT INTO user (first_name, last_name, user_name, email, password, is_active)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO "user" (first_name, last_name, user_name, email, password, is_active)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id
         "#,
             payload.first_name,
             payload.last_name,
             payload.user_name,
             payload.email,
             bcrypt::hash(payload.password, 4).unwrap(),
-            1
+            true
         )
-        .execute(self.db_conn.get_pool())
+        .fetch_one(self.db_conn.get_pool())
         .await?;
 
-        let user = self.user_repo.find(insert.last_insert_id()).await?;
-        return Ok(user);
+        let user_id: i64 = insert.id as i64;
+        let user = self.user_repo.find(user_id).await?;
+        Ok(user)
     }
 
     pub fn verify_password(&self, user: &User, password: &str) -> bool {

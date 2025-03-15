@@ -14,7 +14,7 @@ pub struct UserRepository {
 pub trait UserRepositoryTrait {
     fn new(db_conn: &Arc<Database>) -> Self;
     async fn find_by_email(&self, email: String) -> Option<User>;
-    async fn find(&self, id: u64) -> Result<User, Error>;
+    async fn find(&self, id: i64) -> Result<User, Error>;
 }
 
 #[async_trait]
@@ -26,7 +26,7 @@ impl UserRepositoryTrait for UserRepository {
     }
 
     async fn find_by_email(&self, email: String) -> Option<User> {
-        let user = sqlx::query_as::<_, User>("SELECT * FROM user WHERE email = ?")
+        let user = sqlx::query_as::<_, User>("SELECT * FROM \"user\" WHERE email = $1")
             .bind(email)
             .fetch_optional(self.db_conn.get_pool())
             .await
@@ -34,8 +34,8 @@ impl UserRepositoryTrait for UserRepository {
         return user;
     }
 
-    async fn find(&self, id: u64) -> Result<User, Error> {
-        let user = sqlx::query_as::<_, User>("SELECT * FROM user WHERE id = ?")
+    async fn find(&self, id: i64) -> Result<User, Error> {
+        let user = sqlx::query_as::<_, User>("SELECT * FROM \"user\" WHERE id = $1")
             .bind(id)
             .fetch_one(self.db_conn.get_pool())
             .await;
