@@ -11,5 +11,5 @@ pub struct User {
     pub password: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: Option<DateTime<Utc>>,
-    pub is_active: i8,
+    pub is_active: bool,
 }
