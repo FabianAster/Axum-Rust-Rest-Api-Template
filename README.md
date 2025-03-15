@@ -5,6 +5,7 @@ This project is an open source Rest Api Template built with Rust's Axum framewor
 ## Why this project?
 
 I have been learning rust for some time now and I noticed a lack of open source rust Rest ApI template template that define directory structure the way I like and I'm used to ( SOA ). Most other projects have all the code placed in a single `main.rs` file.
+
 ## Features
 
 This project uses Axum framework and SQLx for DB access layer, as well as other wonderful packages. It includes three basic routes: register, login, and profile page.
@@ -54,6 +55,8 @@ impl DatabaseTrait for Database {
 You will also need to update the migration files in `migrations/*` to match.
 ```
 
+Note: A postgres version is in the postgres branch
+
 ## Contributing
 
-Contributions are always welcome! 
+Contributions are always welcome!

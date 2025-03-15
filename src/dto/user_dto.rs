@@ -44,7 +44,7 @@ pub struct UserReadDto {
     pub email: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: Option<DateTime<Utc>>,
-    pub is_active: i8,
+    pub is_active: bool,
 }
 
 impl UserReadDto {
@@ -64,9 +64,7 @@ impl UserReadDto {
 
 impl std::fmt::Debug for UserLoginDto {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("User")
-            .field("email", &self.email)
-            .finish()
+        f.debug_struct("User").field("email", &self.email).finish()
     }
 }
 
@@ -80,3 +78,4 @@ impl std::fmt::Debug for UserRegisterDto {
             .finish()
     }
 }
+

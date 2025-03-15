@@ -65,8 +65,7 @@ impl UserService {
         .fetch_one(self.db_conn.get_pool())
         .await?;
 
-        let user_id: i64 = insert.id as i64;
-        let user = self.user_repo.find(user_id).await?;
+        let user = self.user_repo.find(insert.id.into()).await?;
         Ok(user)
     }
 
